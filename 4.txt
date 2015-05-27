@@ -1,0 +1,132 @@
+Today
+P
+Youuploaded an item
+9:29 AM
+C++
+main.cpp
+No recorded activity before May 27, 2015
+
+#include <iostream> //w wolnej chwili iedys 1.obsluga bledow do alokacji pamieci 2. destruktor wydaje sie lata w wektorach za duzo razy3. to co mowil bartosz 4.rozmiary dopisac w przeciazanich operatorow
+#include <cstdio>    //potrzebne do new i delete?
+#include <new>      // symbol std::nothrow, wyjatek std::bad_alloc
+//22.10 odc 3 :czas kiedy Zelent zapisuje klase w osobnyn pliku
+using namespace std;
+class WEKTOR
+{ 
+
+
+
+//wszedzie w przeciazeniach brakuje returnow
+//
+
+    
+  
+
+    
+    int operator[](int n) const //czemu tak?
+    {
+        
+        return this->wektor[n];
+    }
+    
+    
+  /*bad boy!  int operator<< (const WEKTOR & v)  // NIE DZIALA :C
+    {
+      ostream & os;
+       os<<" ( ";   
+       
+        for(int i=0; i<wymiar; i++)
+        {
+            os<<v.wektor[i]<<" ";
+        }
+        ostream<<" ) ";
+    }*/
+    
+
+    
+
+ostream & operator << (const WEKTOR &v)        
+{
+    ostream os;
+
+    os<<" (";
+      for(int k=0; k<wymiar; k++)
+        {
+            os<<this->wektor[k];
+        }  
+    os<<" ) ";
+ }
+
+
+
+};
+    //narazie tylko dla wektorow, bez macierzy i liczb(np porownanie liczby z wetktorem..chociaz to bez sensu xD
+//nalezy przeci1?ya operatory: przypisania (=,) (+) (-) * (==) (!=) ([])(indeksowanie){??},
+//<<(operator wyjscia){??}, >>(operator wejscia){??}, (+=) (-=) (*=)
+
+};
+
+
+
+
+
+
+//przy przeci1?aniu operatorów dla macierzy nale?y skorzystac z wczesniej przeci1?onych operatorów dla wektorów(!!!)
+//operatory powinny bya zdefiniowane dla kazdej senswonej(!!!) komibnacji danych typu: liczba, wektor , macierz
+
+
+//utowrzyc 2 osobne programy testowe dla wektorow oraz macierzy
+
+int main()
+{
+bool a,b;
+
+WEKTOR w1;
+w1.wpisz();
+WEKTOR w2;
+w2.wpisz();
+WEKTOR w3;
+
+
+w1.wypisz();
+cout<<"+"<<endl;
+w2.wypisz();
+cout<<"="<<endl;
+
+
+w3=w1 + w2;
+w3.wypisz(); cout<<endl;
+
+w3=w1-w2;
+w3.wypisz();cout<<endl;
+
+a=(w2==w1);
+cout<<a<<endl;
+
+b=(w2!=w1);
+cout<<b<<endl<<endl;
+
+cout<<w1[0]<<endl;
+
+//cout<<w1;
+
+w1+=w2;
+w1.wypisz();
+cout<<endl;
+
+w1-=w2;
+w1.wypisz();
+cout<<endl;
+
+WEKTOR dupa;
+dupa=w1*5;
+dupa.wypisz();
+
+dupa*=5;
+dupa.wypisz();
+
+}
+
+
+
+
