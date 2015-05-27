@@ -1,0 +1,224 @@
+Last month
+P
+Youuploaded an item
+Apr 1
+C++
+matrix.cpp
+No recorded activity before April 1, 2015
+
+//by zygmunt ®
+#include "matrix.h"
+
+Matrix::Matrix(int input_vector_size,  int input_rows)
+{
+	if (input_rows < 1 || input_vector_size < 1)
+	{
+		vectors = NULL;
+		rows = 0; vector_size = 0;
+		return;
+	}
+	
+	vectors = new Vector[input_vector_size];
+	if (vectors == NULL){
+		rows = 0; vector_size = 0; throw bad_alloc();
+	}
+	rows = input_rows;
+	vector_size = input_vector_size;
+	for (int i = 0; i < input_rows; i++)
+		vectors[i] = Vector(vector_size);
+}
+
+Matrix::Matrix(const Matrix& source) 
+{
+	if (source.rows < 1 || source.vectors == NULL)
+	{
+		rows = 0; vectors = NULL;
+		return;
+	}
+	
+	vectors = new Vector[source.rows];
+	if (vectors == NULL){
+		rows = 0; vector_size = 0; throw bad_alloc();
+	}
+	rows = source.rows;
+	vector_size = source.vector_size;
+	for (int i = 0; i < rows; i++)
+		vectors[i] = source.vectors[i];
+}
+
+Matrix::~Matrix()
+{
+	delete[] vectors;
+}
+
+Matrix& Matrix::operator= (const Matrix& source)
+{
+	if (this == &source) return *this;
+	if (source.rows < 1 || source.vectors == NULL)
+	{
+		delete[]vectors;
+		rows = 0; vector_size = 0;
+		return *this;
+	}
+
+	delete[]vectors;
+	vectors = new Vector[source.rows];
+	if (vectors == NULL){
+		rows = 0; vector_size = 0;
+		throw bad_alloc();
+	}
+
+	rows = source.rows;
+	vector_size = source.vector_size;
+	for (int i = 0; i < rows; i++) vectors[i] = source.vectors[i];
+	return *this;
+}
+
+Matrix Matrix::operator+(const Matrix& add) const
+{
+	int max_rows = rows > add.rows ? rows : add.rows;
+	int max_vector_size = vector_size > add.vector_size ? vector_size : add.vector_size;
+	Matrix sum(max_vector_size, max_rows);
+	for (int i = 0; i < sum.rows; i++)
+	{
+		if (i < rows) sum.vectors[i] += vectors[i];
+		if (i < add.rows) sum.vectors[i] += add.vectors[i];
+	}
+	return sum;
+}
+
+Matrix Matrix::operator-(const Matrix& sub) const
+{
+	if (rows < 1 || vectors == NULL)
+	{
+		for (int i = 0; i < sub.rows; i++)
+			sub.vectors[i] = Vector(sub.vector_size) - sub.vectors[i];
+		return sub;
+	}
+	if (sub.rows < 1 || sub.vectors == NULL) return *this;
+
+	int max_rows = rows > sub.rows ? rows : sub.rows;
+	int max_vector_size = vector_size > sub.vector_size ? vector_size : sub.vector_size;
+
+	Matrix diff(max_vector_size, max_rows);
+	for (int i = 0; i < diff.rows; i++)
+	{
+		if (i < rows) diff.vectors[i] += vectors[i];
+		if (i < sub.rows) diff.vectors[i] -= sub.vectors[i];
+	}
+	return diff;
+}
+
+Matrix Matrix::operator*(const int& mltp) const
+{
+	if (rows < 1 || vectors == NULL) return *this;
+	Matrix result(*this);
+	for (int i = 0; i < result.rows; i++) result.vectors[i] = mltp*vectors[i];
+	return result;
+}
+
+Matrix operator*(const int& mltp, const Matrix& source)
+{
+	if (source.rows < 1 || source.vectors == NULL) return source;
+	Matrix result(source);
+	for (int i = 0; i < result.rows; i++) result.vectors[i] = mltp*source.vectors[i];
+	return result;
+}
+
+Matrix Matrix::operator+=(const Matrix& add)
+{
+	if (add.rows < 1 || add.vectors == NULL) return *this;
+
+	int max_rows = rows > add.rows ? rows : add.rows;
+	int max_vector_size = vector_size > add.vector_size ? vector_size : add.vector_size;
+	Matrix temp(max_vector_size, max_rows);
+	
+	for (int i = 0; i < temp.rows; i++)
+	{
+		if (i < rows) temp.vectors[i] += vectors[i];
+		if (i < add.rows) temp.vectors[i] += add.vectors[i];
+	}
+
+	delete[]vectors;
+	vectors = new Vector[temp.rows];
+	if (vectors == NULL){
+		rows = 0; vector_size = 0; throw bad_alloc();
+	}
+
+	rows = temp.rows; 
+	vector_size = temp.vector_size;
+	for (int i = 0; i < rows; i++) vectors[i] = temp.vectors[i];
+	return *this;
+
+}
+
+Matrix Matrix::operator-=(const Matrix& sub)
+{
+	if (sub.rows < 1 || sub.vectors == NULL) return *this;
+
+	int max_rows = rows > sub.rows ? rows : sub.rows;
+	int max_vector_size = vector_size > sub.vector_size ? vector_size : sub.vector_size;
+	Matrix temp(max_vector_size, max_rows);
+
+	for (int i = 0; i < temp.rows; i++)
+	{
+		if (i < rows) temp.vectors[i] += vectors[i];
+		if (i < sub.rows) temp.vectors[i] -= sub.vectors[i];
+	}
+
+	delete[]vectors;
+	vectors = new Vector[temp.rows];
+	if (vectors == NULL){
+		rows = 0; vector_size = 0; throw bad_alloc();
+	}
+
+	rows = temp.rows;
+	vector_size = temp.vector_size;
+	for (int i = 0; i < rows; i++) vectors[i] = temp.vectors[i];
+	return *this;
+}
+
+Matrix Matrix::operator*=(const int& mltp)
+{
+	if (rows < 1 || vectors == NULL) return *this;
+	
+	for (int i = 0; i < rows; i++) vectors[i] *= mltp;
+	return *this;
+}
+
+const int& Matrix::operator()(const int& r_position, const int& c_position) const
+{
+	if (r_position>rows || c_position>vector_size || r_position<0) throw out_of_range("Matrix_Out_of_range_call");
+	return vectors[r_position-1][c_position];
+}
+
+bool Matrix::operator==(const Matrix& source) const
+{
+	if ((rows < 1 || vectors == NULL) && (source.rows < 1 || source.vectors == NULL)) return true;
+	if (rows != source.rows || vector_size!=source.vector_size) return false;
+	for (int i = 0; i < rows; i++)
+		if (vectors[i] != source.vectors[i]) return false;
+	return true;
+}
+
+bool Matrix::operator!=(const Matrix& source) const
+{
+	if (*this == source) return false;
+	return true;
+}
+
+ostream& operator<<(ostream& out, const Matrix& m_out)
+{
+	if (m_out.rows < 1 || m_out.vectors == NULL) { out << "Macierz pusta" << endl; return out; }
+	for (int i = 0; i < m_out.rows; i++) 
+		out << m_out.vectors[i] << endl;
+	return out;
+}
+
+istream& operator>>(istream& in, const Matrix& m_in)
+{
+	if (m_in.rows < 1 || m_in.vectors == NULL) { cout << "Macierz pusta, brak miejsca na wpis" << endl; return in; }
+	for (int i = 0; i < m_in.rows; i++)
+		in >> m_in.vectors[i];
+	return in;
+}

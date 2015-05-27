@@ -1,0 +1,109 @@
+Last month
+P
+Youuploaded an item
+Apr 1
+C++
+main.cpp
+No recorded activity before April 1, 2015
+
+//by zygmunt ®
+
+#include "List.h"
+#include<cstdio>
+
+int main()
+{		
+	List lista;
+	string key_word;
+	try
+	{
+		/*lista.pushBack();
+		lista.pushBack();
+		lista.pushBack();
+		string key_word;
+		cout << "Za ktorym elemntem chcesz umiescic nowy? Wpisz jego zawartosc:" << endl;
+		cin >> key_word;
+		lista.insertAfter(key_word);
+
+		lista.printList();
+
+		lista.popFront();
+		lista.size();
+		lista.printList();
+		lista.remove(lista.searchList(key_word));
+		lista.size();
+		lista.printList();
+		lista.popBack();
+		lista.size();
+		lista.printList();
+		lista.top();
+		lista.back();*/
+
+		char opr;
+		do
+		{
+		printf(
+		"1.Dodanie elementu na poczatku listy\n"
+		"2.Dodanie elementu na koncu listy\n"
+		"3.Dodanie elementu na danym miejscu\n"
+		"4.Usuniecie pierwszego elementu listy \n"
+		"5.Usuniecie ostatniego elementu listy\n"
+		"6.Usuniecie elementu na danym miejscu\n"
+		"7.Wyswietlenie listy\n"
+		"8.Wyszukanie elementu\n"
+		"9.Usuniecie calej listy\n"
+		"0.Sprawdzenie, czy lista jest pusta\n"
+		"Q.Zamknij program\n");
+		cin >> opr;
+
+		switch (opr)
+		{
+		case '1':
+			lista.pushFront();
+			break;
+		case '2':
+			lista.pushBack();
+			break;
+		case '3':
+			cout << "Za ktorym elemntem chcesz dodac kolejny?" << endl;
+			cin >> key_word;
+			lista.insertAfter(key_word);
+			break;
+		case '4':
+			lista.popFront();
+			break;
+		case '5':
+			lista.popBack();
+			break;
+		case '6':
+			cout << "Ktory element usunac?" << endl;
+			cin >> key_word;
+			lista.remove(lista.searchList(key_word));
+			break;
+		case '7':
+			lista.printList();
+			break;
+		case '8':
+			cout << "Podaj element do wyszukania" << endl;
+			cin >> key_word;
+			if (lista.searchList(key_word)) cout << "Element jest na liscie" << endl;
+			break;
+		case '9':
+			lista.~List();
+			break;
+		case '0':
+			lista.isEmpty();
+			break;
+		}
+		} while (opr != 'Q');
+		
+	}
+
+	catch (bad_alloc& ba)
+	{
+		cout << ba.what() << endl;
+	}
+	
+	getchar();
+	return 0;
+}
