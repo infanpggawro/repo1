@@ -1,0 +1,132 @@
+Last month
+P
+Youuploaded an item
+Apr 28
+C
+main.c
+No recorded activity before April 28, 2015
+
+#include<stdio.h>
+#include<stdlib.h>
+#include <unistd.h>d
+#include "array.h"
+#include "array.c"
+#include "algorytm.h"
+#include "algorytm.c"
+#include <time.h>
+
+void save_matrix(struct array matrix,FILE* dane_wyj)
+{
+    dane_wyj=fopen("dane_wy.txt","w");
+    if(dane_wyj==NULL)
+    {
+        printf("Nie moge otworzyc pliku");
+        return;
+    }
+    
+    int i,j;
+    for(i=0;i<matrix.row ;i++)
+	{
+		for(j=0; j<matrix.col; j++)
+		{
+			if(matrix.head[i][j]==1)
+			{
+				fprintf(dane_wyj,"%d",i);
+				fprintf(dane_wyj," ");
+				fprintf(dane_wyj,"%d",j);
+				fprintf(dane_wyj,"\n");
+			}
+			
+		}
+	
+	}
+}
+
+//makefile, uzywanie argc argv, eeof  : Row i Col sa o 2 wieksze, bo jest wokol nich planowana ramka wypelniana zerami.
+void main(int argc, int argv[])
+{
+FILE *dane_we;
+FILE *dane_wy;
+int dana;
+int i,j,x,y; 
+int wybor;
+int ilosc;
+matrix generacja;  //struct array marix  generacja? 
+int **sasiedzi; // do wyjebania potem
+
+
+dane_we=fopen("dane_we.txt","r");
+if(dane_we==NULL)
+{
+    printf("Nie moge otworzyc pliku");
+    return;
+}
+
+
+zliczam_najwieksze_xy_i_ustawiam_row_col(dane_we, &generacja); // wpisuje row i col
+rewind(dane_we);
+create_matrix_zero(&generacja); //tworzy macierz o odpowiednich wymiarach
+
+i=0;                             
+while(fscanf(dane_we, "%d", &dana)!=EOF)
+    {
+        if(i%2==0) x=dana; 
+        if(i%2!=0)
+        { 
+           y=dana;
+           insert_element(&generacja, (x+1), (y+1), 1); //x+1 i y+1 uwzglednia istnienie ramki z zer wok??? planszy. |bez nawiasow nie dziala, czemu?|
+        }
+    i++;
+    }
+
+
+
+do{
+    printf("Witaj w grze o zycie! Aby wyswietlic 10 pokolen wcisnij 1. Aby wyswietlic dowolna podana przez Ciebie liczbe pokolen wcisnij 2. Aby zakonczyc wcisnij 0.");
+    scanf("%d",&wybor);
+    switch(wybor)
+    {
+        case 1: 
+            i=0;
+            while(i<10)
+                {
+                   //  ClrScr();
+                    system("cls");
+                    write_matrix(generacja);       
+                    sasiedzi=licznik_sasiadow(generacja);
+                    graj(&generacja);
+                    sleep(1);
+                    save_matrix(generacja,dane_wy);
+                    i++;
+                }
+                break;
+         case 2:
+         printf("Podaj ilosc pokolen do wyswietlenia");
+         scanf("%d",&ilosc);       
+             i=0;
+            while(i<ilosc)
+                {
+                   //  ClrScr();
+                    system("cls");
+                    write_matrix(generacja);       
+                    sasiedzi=licznik_sasiadow(generacja);
+                    graj(&generacja);
+                    sleep(1);
+                    save_matrix(generacja,dane_wy);
+                    i++;
+                }
+                break;    
+        }
+    }while(wybor!=0);
+
+
+    
+
+
+}
+
+
+
+
+
+
