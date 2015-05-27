@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 Last month
 PZMIENIAM DRUGA
+=======
+TO JEST PLIK GAWRONA - JA GO ZMIENIAM (1 LINE)
+P
+>>>>>>> 9731094dd8d5192e1559e06421aaca69d49afc1d
 Youuploaded an item
 Apr 28
 C
