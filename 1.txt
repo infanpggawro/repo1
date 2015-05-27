@@ -1,0 +1,114 @@
+Last month
+P
+Youuploaded an item
+Apr 28
+C
+algorytm.c
+No recorded activity before April 28, 20155
+
+#include<stdio.h>
+
+
+
+void ClrScr()
+{
+  printf("\033[2J"); 
+  printf("\033[0;0f");
+}
+
+int** licznik_sasiadow(struct array matrix)
+{
+    int i,j,kol,rz;
+    int** licznik_zywych;
+
+    licznik_zywych=(int**) calloc(matrix.row , sizeof(int*)); //rezerwacja pamieci dla licznik_zywych + wypelnia zerami
+    if(licznik_zywych==NULL)
+    {
+        printf("Nie udalo sie przydzielic pamieci[f:ile_sasiadow:rzedy]");
+        return;
+    }
+    
+    for(i=0; i<matrix.row; i++)
+    {
+        *(licznik_zywych+i)=(int*) calloc(matrix.col , sizeof(int));
+        if(*licznik_zywych==NULL){
+            printf("Nie udalo sie przydzielic pamieci[f:ile_sasiadow: kolumny]");
+            return;
+        }
+    }
+    
+    
+    
+    for(i=1; i<matrix.row-1; i++) //ta petrla chodzi po calej tablicy oprocz 'ramek'
+    {
+        for(j=1;j<matrix.col-1;j++)
+        {
+            
+            
+            for(rz=i-1; rz<=i+1; rz++) // ta petla w szcegolnosci liczy sasiadow komorki [rz][kol]
+            {
+                for(kol=j-1; kol<=j+1; kol++){
+                    if(matrix.head[rz][kol]==1) licznik_zywych[i][j]++;}
+  
+            }
+            if(matrix.head[i][j]==1) licznik_zywych[i][j]--;
+        }
+    }
+    
+    return licznik_zywych; //zwraca wskaznik na tablice zawierajaca ilosc zywych/ komorek  dla [x][y]
+}
+
+void graj(struct array *matrix) //tworzy nowa strukture(tablice?), dostaje stara, licze sasiadow, patrze co sie zmienia-zapisuje w nowej - //w mainie do pliku, cyz jak? zeby zwracala cos, co potem moze isc do pliku// a w mainie wyswietlic nowa. czyli w mainie bedzie: while(costam){{graj, napisz(graj)}}
+   {
+       int i,j;
+       int **liczba_sasiadow;
+       
+       liczba_sasiadow=licznik_sasiadow(*matrix);
+       
+       for(i=1; i<matrix->row; i+=(matrix->row-2)) //jesli ktorakolwiek zyje w obrebie pierwszego ostatniego wiersza to zwieksz tablice(zeby moc tam ulokowac komorki)
+        {                                           //-3 zeby gdy rozmiar 50, to nie chce dostac 49, tylko 48, wiec 50-2, wiec i(1)=47+1=48
+            for (j=1; j<matrix->col-1; j++)
+            {
+                 if(matrix->head[i][j]==1)
+                 {
+                  resize_matrix_zero(matrix, 1, 0);
+                 break;
+                }
+            }
+        }
+             
+          for(i=1; i<matrix->col; i+=(matrix->col-2)) //to co wyzej tylko w pionie
+        {
+            for (j=1; j<matrix->row-1 ;j++) //zeby zrozumiec: narysuj!
+            {
+                 if(matrix->head[i][j]==1)
+                 {
+                  resize_matrix_zero(matrix, 0, 1);
+                 break;
+                }
+            }
+                  
+        }
+       
+        for(i=1; i<matrix->row-1; i++) //ta petrla chodzi po  tablicy i . rozklada zywe komorki.
+            {   
+                for(j=1; j<matrix->col-1 ;j++)
+                {
+                    if((matrix->head[i][j]==1) && (liczba_sasiadow[i][j]==0 || liczba_sasiadow[i][j]==1)) matrix->head[i][j]=0;//umiera z samotnosci
+                    else 
+                    {
+                    if((matrix->head[i][j]==1) && (liczba_sasiadow[i][j]>3) ) matrix->head[i][j]=0; //umiera z przeludnienia
+                    else
+                    if((matrix->head[i][j]==0) && (liczba_sasiadow[i][j]==3) ) matrix->head[i][j]=1;//rodzi sie
+                    }
+                    
+                   
+                }
+            }
+            
+            
+}
+
+
+
+            
