@@ -1,0 +1,57 @@
+Today
+P
+Youuploaded an item
+9:29 AM
+C
+wektor.h
+No recorded activity before May 27, 2015
+
+#include <iostream>
+
+using namespace std;
+
+class WEKTOR
+{ 
+    int* wektor;
+    int wymiar; 
+                   //moze byc problem potem z wymiar i wym, ze 2x..ale nie wiem
+                 // przeciazenia opeartorow ,a potem w macierzy z nich korzystamy
+
+   void zeruj();
+   void alokacja();
+  
+public:
+  void wpisz() ;
+  int wypisz();
+  WEKTOR(int=2);  //w headerze podaje tylko typ i wartosc(ilosc mu chodzi. moge dawac od lewej, do dowolnej. Dlatego m,adrze ustawiac, a potem zmienaic w cpp :) ), w cpp podaje zmienna(bo tam ja msuze przypisac czemus)
+  WEKTOR(WEKTOR& w);
+  ~WEKTOR()        
+    
+    WEKTOR & operator=  (const WEKTOR & v);//jakby nie byly w klasie, to te 2 argm. a kiedy nie w klasie? chuj wi.
+    WEKTOR   operator+  (const WEKTOR & v);
+    WEKTOR   operator-  (const WEKTOR & v);
+    WEKTOR   operator*  (const int & a);
+    bool     operator== (const WEKTOR & v);
+    bool     operator!= (const WEKTOR & v);
+    WEKTOR & operator+= (const WEKTOR & v)
+    WEKTOR & operator-= (const WEKTOR & v)
+    WEKTOR & operator*= (const int & a)
+    //***********************************************************************************tego nie przeciazalem i nie ma w cpp
+    int operator[](int n) const; //czemu tak?
+    ostream & operator << (const WEKTOR &v);
+};
+
+
+
+class MACIERZ
+{
+    int wymiar;
+    WEKTOR** wektor;          //POTENCJALNE ZRODLO BLEDU
+    int pomocnicza;
+public:
+    int wypisz();
+    MACIERZ(int=2, int=2);
+    ~MACIERZ();
+    //wpisz?
+    
+    
