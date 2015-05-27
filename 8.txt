@@ -1,0 +1,48 @@
+Last month
+P
+Youuploaded an item
+Apr 1
+C
+List.h
+No recorded activity before April 1, 2015
+
+//by zygmunt ®
+#include<iostream>
+#include<string>
+#include<new>
+#include<exception>
+using namespace std;
+
+struct Node{
+	string item;
+	struct Node* prev;
+	struct Node* next;
+};
+
+class List
+{
+public:
+	List();
+	~List();
+	void pushFront();
+	void pushBack();
+	void insertAfter(string key_word);
+	void insertBefore(string key_word);
+	void popFront();
+	void popBack();
+	void remove(Node* temp);
+	Node* searchList(string key_word);
+	bool isEmpty();
+	void printList();
+	void top();
+	void back();
+	void size();
+
+	friend string addItem();
+
+private:
+	Node* head;
+	int counter;
+};
+
+
