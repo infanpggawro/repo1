@@ -1,0 +1,257 @@
+Today
+P
+Youuploaded an item
+9:29 AM
+C++
+wektor.cpp
+No recorded activity before May 27, 2015
+
+#include<iostream>
+#include "wektor.h"
+using namespace std;
+
+void WEKTOR::zeruj()
+{
+     for(int i=0; i<wymiar; i++) wektor[i]=0;
+}
+
+
+
+void WEKTOR::alokacja()
+   {
+       wektor = new int[wymiar];
+       //WHAT IF  if(wektor==nullptr) cout<<"Brak pamieci";
+   }
+    
+    
+    
+void WEKTOR::wpisz()
+{
+    for(int i=0; i<wymiar; i++) 
+    {
+    cout<<"podaj "<<i+1<<" element wspolrzednej wektora nr ";
+    cin>>wektor[i];
+    }
+}
+
+
+
+int WEKTOR:wypisz()
+{
+    for(int i=0; i<wymiar; i++) cout<<wektor[i]<<" ";
+    cout<<endl;
+}
+
+
+
+WEKTOR::WEKTOR(int wym) //tworzy tablice n(default=2) elementowa. Przy podaniu innych wartosci tworzy inna
+{
+   wymiar=wym;//musi tak byc?   moze byc tez this->wymiar=wymiar, i w arg f int wymiar=2
+   alokacja();     
+   zeruj();                 //WEKTOR::zeruj? ....? czy jakso inaczej? ogarnac zeelnta.
+}   
+  
+  
+  //**************************************uzywam this***********************************************************
+WEKTOR::WEKTOR(WEKTOR& w) //kopiuje cala tablice do nowego wektora(juz statycznego), bo w innym wypadku a,b-wektory, a=b, a zostanie przepiete na alokowane dynamicznie adresy b, a nie przekopiuje wartosci
+{//wywolywany gdy np WEKTOR obiekt1=obiekt2; gdy WEKTOR obiekt1; obiekt1=obiekt2' -><-przypisanie zwykle
+   for(int i=0; i<wymiar; i++)
+    {
+    this->wektor[i]=w.wektor[i]
+    }
+    this->wymiar=w.wymiar;
+}
+   
+   
+   
+WEKTOR::~WEKTOR()        // nie moze miec arguementow => tylko 1 na klase
+{          
+   delete [] wektor;//tyle wystarycz? przepnie na nulla?
+      //  cout<<endl<<"to ja destruktor wektora sie nazywam";
+}    
+
+
+//**************************OPERATORY***********************************************
+WEKTOR & WEKTOR::operator=(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    for(int i=0; i<this->wymiar; i++)
+    {
+     this->wektor[i]=v.wektor[i];
+    }  
+     this->wymiar=v.wymiar;
+     return *this;
+}
+    
+    
+    
+WEKTOR WEKTOR::operator+(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    
+    WEKTOR wektor_wyjsciowy(this->wymiar); //dopisac tu wymiar?
+    
+    for(int i=0; i<this->wymiar; i++)
+    {
+        wektor_wyjsciowy.wektor[i]=this->wektor[i] + v.wektor[i];
+    }   
+    return wektor_wyjsciowy;       
+}
+    
+    
+    
+WEKTOR WEKTOR::operator-(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    WEKTOR wektor_wyjsciowy(this->wymiar);//dopisac tu wymiar?
+    
+    for(int i=0; i<this->wymiar; i++)
+    {
+        wektor_wyjsciowy.wektor[i]=this->wektor[i] - v.wektor[i];
+    }   
+    return wektor_wyjsciowy;       
+}
+    
+    
+    
+WEKTOR WEKTOR::operator*(const int & a) //what if liczba*wektor? czyli na odwrot?
+    {
+        WEKTOR wektor_wyjsciowy(this->wymiar);//dopisac tu wymiar?
+        
+        for(int i=0; i<this->wymiar; i++)
+        {
+            wektor_wyjsciowy.wektor[i]=this->wektor[i] * a;
+        }   
+        return wektor_wyjsciowy;       
+    }
+    
+    
+    
+bool WEKTOR::operator==(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    
+    for(int i=0; i<this->wymiar; i++)
+    {
+        if(this->wektor[i] != v.wektor[i]) return false;
+    }   
+      
+    return true;
+}
+
+
+
+bool WEKTOR::operator!=(const WEKTOR & v);
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    
+    for(int i=0; i<this->wymiar; i++)
+    {
+        if(this->wektor[i] != v.wektor[i]) return true;
+    }   
+        
+    return false;
+}
+
+
+
+WEKTOR & WEKTOR::operator+=(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    
+   for(int i=0; i<this->wymiar; i++)
+    {
+        this->wektor[i]=this->wektor[i] + v.wektor[i];
+    }  
+}
+
+WEKTOR & WEKTOR::operator-=(const WEKTOR & v)
+{
+    if(this->wymiar!=v.wymiar)
+    {
+        cout<<"ROZNE WYMIARY WEKTOROW! Terminated."<<endl;
+        return;
+    }
+    
+    for(int i=0; i<this->wymiar; i++)
+    {
+        this->wektor[i]=this->wektor[i] - v.wektor[i];
+    }  
+}
+
+
+WEKTOR & WEKTOR::operator*=(const int & a)
+{
+   for(int i=0; i<this->wymiar; i++)
+    {
+        this->wektor[i]=this->wektor[i] * a;
+    }  
+}
+    
+     //***********************************************************************************tego nie przeciazalem i nie ma w cpp
+    int operator[](int n) const; //czemu tak?
+    ostream & operator << (const WEKTOR &v);
+
+   
+ //******************--------------------***************----------------***************------------************   
+    
+int MACIERZ::wypisz()
+{
+    for(int i=0; i<pomocnicza_l_wektorow; i++)
+    {
+        (**v).wypisz();                 //zrozumie ze chodzi o wypisz wektor? zelent.
+    }
+}
+//COPYPASTA, OGARNAC!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+MACIERZ::MACIERZ(int elementy_wektora, int liczba_wektorow)
+{
+     v = new WEKTOR* [liczba_wektorow];// MAM TABLICe wskaznikow na obiekty. rezerwuje tyle pam, ile obiektow 
+    for (int i=0; i < liczba_wektorow; i++) v[i] = new WEKTOR(elementy_wektora); //v[i] wskaznik na obiekt.przypisuje mu(tworzy)obiekt
+    pomocnicza_l_wektorow=liczba_wektorow;
+ }
+        /*MACIERZ(int elementy_wektora=2, int liczba_wektorow=2) 
+    {    
+          musze zaalkoowac tablice 2 wskaznikow na wektory a potem kazdmeu z tych wskoanikow przepiac na wskanik na wektor.
+          = new (nothrow) WEKTOR[liczba_wektorow]; //Wektor.wektor == **wektor. Wymiar okresla ilosc objektow typu WEKTOR...tworze tablice wskaznikow na obiekty WEKTOR. Potem odwolujac sie do elementow tej tablicy odwoluje sie do kolejnych obiektow WEKTOR, czyli do wektorow
+        //WHAT IF if(v.wektor==nullptr) cout<<"Brak pamieci";
+        for(int i=0; i<liczba_wektorow; i++)
+        {
+            v[i]=new WEKTOR(elementy_wektora);
+    }*/
+    // od alka
+
+MACIERZ::~MACIERZ()
+{          
+     for(int j=0; j<pomocnicza_l_wektorow; j++)
+     {
+            delete [] v[j]; 
+     }
+     delete [] v;
+        cout<<endl<<"to ja destruktor sie nazywam";
+}
+    
+    
